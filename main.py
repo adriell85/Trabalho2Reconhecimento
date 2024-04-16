@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from KNN import KNN
 from DMC import DMC
+from Bayes_Gaussian_Multivar import NaiveBayesGaussianMultivar
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
@@ -57,13 +58,69 @@ def openArtificialDataset():
     originalLabel = []
     with open("bases/artificial/artificial.txt") as file:
         for line in file:
+            splt = line.split(' ')[-1]
             label = int(line.split(' ')[-1].strip())
-            originalLabel.append(str(line.split(' ')[-1].strip()))
             y.append(label)
             x.append([float(feature) for feature in line.split(' ')[0:2]])
+
     print('Column Dataset Opened!')
 
     return [x, y, np.unique(originalLabel)]
+
+
+
+def openBreastDataset():
+    x = []
+    y = []
+    originalLabel = []
+    ConvertLabel = {
+        'M': 0,
+        'B': 1,
+    }
+    with open("bases/Breast Cancer/wdbc.data") as file:
+        for line in file:
+            label = ConvertLabel[(line.split(',')[1])]
+            originalLabel.append(str(line.split(',')[1]))
+            y.append(label)
+            x.append([(feature) for feature in line.split(',')[2:]])
+        newX = normalizeColumns(np.float64(x)).tolist()
+    print('Breast Cancer Dataset Opened!')
+
+    return [newX, y, np.unique(originalLabel)]
+
+def openDermatologyDataset():
+    x = []
+    y = []
+    originalLabel = []
+    with open("bases/dermatology/dermatology.data") as file:
+        for line in file:
+            features = line.split(',')
+
+            lineSplited = int(line.split(',')[-1])
+            # Convertendo '?' para np.nan (valor ausente do NumPy)
+            features = [np.nan if feature == '?' else float(feature) for feature in features[:-1]]
+            x.append(features)
+            y.append(lineSplited)  # Supondo que a última coluna seja o rótulo
+
+    # Convertendo x para um array do NumPy para facilitar manipulações
+    x = np.array(x, dtype=np.float64)
+
+    # Substituindo valores ausentes pela média da coluna (ignorando valores NaN na média)
+    for i in range(x.shape[1]):
+        column_mean = np.nanmean(x[:, i])
+        np.place(x[:, i], np.isnan(x[:, i]), column_mean)
+
+    # Normalização das colunas
+    newX = normalizeColumns(x).tolist()
+
+    print('Breast Cancer Dataset Opened!')
+
+    return [newX, y, np.unique(originalLabel)]
+
+
+
+
+
 
 
 
@@ -137,27 +194,16 @@ def plotDecisionSurface(xtrain,ytrain,classifierName,i,datasetName):
         [1,3],
         [2,3]
     ]
-    atributesCombinationColumn = [
-        [0, 1],
-        [0, 2],
-        [0, 3],
-        [0, 4],
-        [0, 5],
-        [1, 2],
-        [1, 3],
-        [1, 4],
-        [1, 5],
-        [2, 3],
-        [2, 4],
-        [2, 5],
+    atributesCombinationFree = [
+        [5, 3],
         [3, 4],
-        [3, 5],
-        [4, 5]
+        [4, 5],
+        [7,10]
     ]
     if(datasetName=='Iris'):
         atributesCombination = atributesCombinationIris
     else:
-        atributesCombination = atributesCombinationColumn
+        atributesCombination = atributesCombinationFree
 
     for z in atributesCombination:
         xtrainSelected = np.array(xtrain)
@@ -175,8 +221,10 @@ def plotDecisionSurface(xtrain,ytrain,classifierName,i,datasetName):
         matrix = tuple(matrix)
         if(classifierName=='KNN'):
             Z = KNN(xtrainSelected, ytrain, matrix, k=3)
-        else:
+        elif(classifierName=='DMC'):
             Z = DMC(xtrainSelected, ytrain, matrix)
+        else:
+            Z = NaiveBayesGaussianMultivar(xtrainSelected, ytrain, matrix)
         Z = np.array(Z)
         Z = Z.reshape(xx.shape)
         fig, ax = plt.subplots()
@@ -185,10 +233,9 @@ def plotDecisionSurface(xtrain,ytrain,classifierName,i,datasetName):
         x_vals = [sample[0] for sample in xtrainSelected]
         y_vals = [sample[1] for sample in xtrainSelected]
         plt.scatter(x_vals, y_vals, c=ytrain, s=20, edgecolor='k', cmap=colors)
-        if (datasetName == 'Iris'):
-            plt.title('Superfície de Decisão do KNN base {}'.format(datasetName))
-        else:
-            plt.title('Superfície de Decisão do DMC base {}'.format(datasetName))
+
+        plt.title('Superfície de Decisão do {} base {}'.format(classifierName,datasetName))
+
         plt.xlabel('Atributo 1')
         plt.ylabel('Atributo 2')
         fig.savefig('Resultados_{}/{}/Superficie_de_decisao_base_{}_Atributos_{}_Iteracao_{}.png'.format(classifierName,datasetName,datasetName,z,i))
@@ -275,11 +322,51 @@ def DMCRuns(base):
             '\nAcurácia média das 20 iterações: {:.2f} ± {:.2f}'.format(np.mean(accuracyList), np.std(accuracyList)))
 
 
+def NayveBayesRuns(base):
+    convertRun = {
+        0: openIrisDataset(),
+        1: openColumnDataset(),
+        2: openArtificialDataset(),
+        3: openBreastDataset(),
+        4: openDermatologyDataset()
+    }
+    convertDocName = {
+        0: 'Iris',
+        1: 'Coluna',
+        2: 'Artificial',
+        3: 'Breast',
+        4: 'Dermatology'
 
+    }
+
+    out = convertRun[base]
+    x = out[0]
+    y = out[1]
+    originalLabels = out[2]
+    accuracyList = []
+    fileName = "NaiveRuns_{}.txt".format(convertDocName[base])
+    with open(fileName, 'w') as arquivo:
+        arquivo.write("Execução Iterações Naive {}.\n\n".format(convertDocName[base]))
+        for i in range(20):
+            print('\nIteração {}\n'.format(i))
+            xtrain, ytrain, xtest, ytest = datasetSplitTrainTest(x, y, 80)
+            ypredict = NaiveBayesGaussianMultivar(xtrain, ytrain, xtest)
+            confMatrix = confusionMatrix(ytest, ypredict)
+            print('Confusion Matrix:\n', confMatrix)
+            plotConfusionMatrix(confMatrix,originalLabels,'Naive',i,convertDocName[base])
+            accuracy = np.trace(confMatrix) / np.sum(confMatrix)
+            print('ACC:', accuracy)
+            arquivo.write("ACC: {}\n".format(accuracy))
+            arquivo.write("Confusion Matrix: \n {} \n\n".format(confMatrix))
+            accuracyList.append(i)
+            plotDecisionSurface(xtrain, ytrain,'Naive',i,convertDocName[base])
+        print('\nAcurácia média das 20 iterações: {:.2f} ± {:.2f}'.format(np.mean(accuracyList), np.std(accuracyList)))
+        arquivo.write(
+            '\nAcurácia média das 20 iterações: {:.2f} ± {:.2f}'.format(np.mean(accuracyList), np.std(accuracyList)))
 
 
 if __name__ =='__main__':
-    KNNRuns(0)
+    NayveBayesRuns(2)
     # DMCRuns(0)
 
 
