@@ -79,7 +79,6 @@ def NaiveBayesGaussianMultivar(x_train, y_train, x_test):
     x_train = np.array(x_train)
     y_train = np.array(y_train)
     x_test = np.array(x_test)
-    # Passo 1: Identificação das classes únicas e inicialização dos componentes do modelo
     classes = np.unique(y_train)
     n_classes = len(classes)
     n_features = x_train.shape[1]
@@ -87,18 +86,13 @@ def NaiveBayesGaussianMultivar(x_train, y_train, x_test):
     means = np.zeros((n_classes, n_features))
     covariances = np.zeros((n_classes, n_features, n_features))
 
-
-
-    # Passo 2: Cálculo da Probabilidade Priori e estatísticas para cada classe
     for i, c in enumerate(classes):
         x_c = x_train[y_train == c]
         priors[i] = x_c.shape[0] / x_train.shape[0]
         means[i] = np.mean(x_c, axis=0)
         covariances[i] = np.cov(x_c, rowvar=False)
 
-    # Função para calcular a probabilidade condicional (likelihood) multivariada
-
-    plot_gaussian_distribution_3d(means, covariances, classes, feature_indices=(1, 2))
+    plot_gaussian_distribution_3d(means, covariances, classes, feature_indices=(0, 1))
     def multivariate_gaussian_pdf(x, mean, covariance):
         det_cov = np.linalg.det(covariance)
         inv_cov = np.linalg.inv(covariance)
@@ -106,7 +100,6 @@ def NaiveBayesGaussianMultivar(x_train, y_train, x_test):
         denominator = np.sqrt((2 * np.pi) ** n_features * det_cov)
         return numerator / denominator
 
-    # Passo 3: Classificação usando o Teorema de Bayes
     def classify(x):
         posteriors = np.zeros(n_classes)
         for i in range(n_classes):
@@ -114,18 +107,10 @@ def NaiveBayesGaussianMultivar(x_train, y_train, x_test):
             posteriors[i] = likelihood * priors[i]
         return classes[np.argmax(posteriors)]
 
-    # Aplicando a classificação para cada amostra no conjunto de teste
     predictions = np.array([classify(x) for x in x_test])
-    print(predictions)
+
     return predictions
 
 
-# Exemplo de uso
-# x_train = np.array(...)  # Substitua ... pelos seus dados
-# y_train = np.array(...)
-# x_test = np.array(...)
-
-# predictions = naive_bayes_gaussian_multivar(x_train, y_train, x_test)
-# print(predictions)
 
 

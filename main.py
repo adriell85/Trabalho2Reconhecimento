@@ -195,10 +195,7 @@ def plotDecisionSurface(xtrain,ytrain,classifierName,i,datasetName):
         [2,3]
     ]
     atributesCombinationFree = [
-        [5, 3],
-        [3, 4],
-        [4, 5],
-        [7,10]
+        [0, 1],
     ]
     if(datasetName=='Iris'):
         atributesCombination = atributesCombinationIris
