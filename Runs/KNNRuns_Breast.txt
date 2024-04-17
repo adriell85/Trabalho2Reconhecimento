@@ -1,0 +1,104 @@
+Execução Iterações KNN Breast.
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[37  4]
+ [ 0 72]] 
+
+ACC: 0.9734513274336283
+Confusion Matrix: 
+ [[40  3]
+ [ 0 70]] 
+
+ACC: 0.9823008849557522
+Confusion Matrix: 
+ [[37  1]
+ [ 1 74]] 
+
+ACC: 0.9734513274336283
+Confusion Matrix: 
+ [[37  3]
+ [ 0 73]] 
+
+ACC: 0.9557522123893806
+Confusion Matrix: 
+ [[37  4]
+ [ 1 71]] 
+
+ACC: 0.9557522123893806
+Confusion Matrix: 
+ [[45  5]
+ [ 0 63]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[46  2]
+ [ 2 63]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[38  2]
+ [ 2 71]] 
+
+ACC: 0.9911504424778761
+Confusion Matrix: 
+ [[45  1]
+ [ 0 67]] 
+
+ACC: 0.9557522123893806
+Confusion Matrix: 
+ [[40  3]
+ [ 2 68]] 
+
+ACC: 0.9469026548672567
+Confusion Matrix: 
+ [[39  4]
+ [ 2 68]] 
+
+ACC: 0.9823008849557522
+Confusion Matrix: 
+ [[33  2]
+ [ 0 78]] 
+
+ACC: 0.9734513274336283
+Confusion Matrix: 
+ [[34  1]
+ [ 2 76]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[43  3]
+ [ 1 66]] 
+
+ACC: 0.9911504424778761
+Confusion Matrix: 
+ [[39  1]
+ [ 0 73]] 
+
+ACC: 0.9823008849557522
+Confusion Matrix: 
+ [[38  2]
+ [ 0 73]] 
+
+ACC: 0.9734513274336283
+Confusion Matrix: 
+ [[45  1]
+ [ 2 65]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[44  2]
+ [ 2 65]] 
+
+ACC: 0.9823008849557522
+Confusion Matrix: 
+ [[39  2]
+ [ 0 72]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[43  4]
+ [ 0 66]] 
+
+
+Acurácia média das 20 iterações: 9.50 ± 5.77

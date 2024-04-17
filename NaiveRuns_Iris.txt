@@ -1,8 +1,0 @@
-Execução Iterações Naive Iris.
-
-ACC: 1.0
-Confusion Matrix: 
- [[ 7  0  0]
- [ 0  7  0]
- [ 0  0 16]] 
-

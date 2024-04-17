@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from KNN import KNN
 from DMC import DMC
-from Bayes_Gaussian_Multivar import NaiveBayesGaussianMultivar
+from Bayes_Gaussian_Multivar import naiveBayesGaussianMultivar
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
@@ -141,7 +141,7 @@ def split_data_randomly(data, percentage):
 
     return first_group, second_group
 
-def datasetSplitTrainTest(x,y,percentageTrain):
+def datasetSplitTrainTest(x,y,percentageTrain,labelClassifier,labelDataset):
 
     dataToSplit = [[x,y] for x,y in zip(x,y)]
 
@@ -196,6 +196,11 @@ def plotDecisionSurface(xtrain,ytrain,classifierName,i,datasetName):
     ]
     atributesCombinationFree = [
         [0, 1],
+        [0, 4],
+        [0, 5],
+        [2, 3],
+        [3, 4],
+        [4, 5]
     ]
     if(datasetName=='Iris'):
         atributesCombination = atributesCombinationIris
@@ -221,7 +226,7 @@ def plotDecisionSurface(xtrain,ytrain,classifierName,i,datasetName):
         elif(classifierName=='DMC'):
             Z = DMC(xtrainSelected, ytrain, matrix)
         else:
-            Z = NaiveBayesGaussianMultivar(xtrainSelected, ytrain, matrix)
+            Z = naiveBayesGaussianMultivar(xtrainSelected ,ytrain, matrix, datasetName)
         Z = np.array(Z)
         Z = Z.reshape(xx.shape)
         fig, ax = plt.subplots()
@@ -236,7 +241,7 @@ def plotDecisionSurface(xtrain,ytrain,classifierName,i,datasetName):
         plt.xlabel('Atributo 1')
         plt.ylabel('Atributo 2')
         fig.savefig('Resultados_{}/{}/Superficie_de_decisao_base_{}_Atributos_{}_Iteracao_{}.png'.format(classifierName,datasetName,datasetName,z,i))
-        plt.show()
+        # plt.show()
 
 
 
@@ -245,12 +250,17 @@ def KNNRuns(base):
     convertRun = {
         0: openIrisDataset(),
         1: openColumnDataset(),
-        2: openArtificialDataset()
+        2: openArtificialDataset(),
+        3: openBreastDataset(),
+        4: openDermatologyDataset()
     }
     convertDocName = {
         0: 'Iris',
         1: 'Coluna',
-        2: 'Artificial'
+        2: 'Artificial',
+        3: 'Breast',
+        4: 'Dermatology'
+
     }
 
     out = convertRun[base]
@@ -264,7 +274,7 @@ def KNNRuns(base):
         arquivo.write("Execução Iterações KNN {}.\n\n".format(convertDocName[base]))
         for i in range(20):
             print('\nIteração {}\n'.format(i))
-            xtrain, ytrain, xtest, ytest = datasetSplitTrainTest(x, y, 80)
+            xtrain, ytrain, xtest, ytest = datasetSplitTrainTest(x, y, 80,'KNN',convertDocName[base])
             ypredict = KNN(xtrain, ytrain, xtest, 5)
             confMatrix = confusionMatrix(ytest, ypredict)
             print('Confusion Matrix:\n', confMatrix)
@@ -284,12 +294,17 @@ def DMCRuns(base):
     convertRun = {
         0: openIrisDataset(),
         1: openColumnDataset(),
-        2: openArtificialDataset()
+        2: openArtificialDataset(),
+        3: openBreastDataset(),
+        4: openDermatologyDataset()
     }
     convertDocName = {
         0: 'Iris',
         1: 'Coluna',
-        2: 'Artificial'
+        2: 'Artificial',
+        3: 'Breast',
+        4: 'Dermatology'
+
     }
 
     out = convertRun[base]
@@ -303,7 +318,7 @@ def DMCRuns(base):
         arquivo.write("Execução Iterações DMC.\n\n")
         for i in range(20):
             print('\nIteração {}\n'.format(i))
-            xtrain, ytrain, xtest, ytest = datasetSplitTrainTest(x, y, 80)
+            xtrain, ytrain, xtest, ytest = datasetSplitTrainTest(x, y, 80,'DMC',convertDocName[base])
             ypredict = DMC(xtrain, ytrain, xtest)
             confMatrix = confusionMatrix(ytest, ypredict)
             print('Confusion Matrix:\n', confMatrix)
@@ -346,8 +361,8 @@ def NayveBayesRuns(base):
         arquivo.write("Execução Iterações Naive {}.\n\n".format(convertDocName[base]))
         for i in range(20):
             print('\nIteração {}\n'.format(i))
-            xtrain, ytrain, xtest, ytest = datasetSplitTrainTest(x, y, 80)
-            ypredict = NaiveBayesGaussianMultivar(xtrain, ytrain, xtest)
+            xtrain, ytrain, xtest, ytest = datasetSplitTrainTest(x, y, 80,'Naive Bayes Gaussian',convertDocName[base])
+            ypredict = naiveBayesGaussianMultivar(xtrain, ytrain, xtest,convertDocName[base])
             confMatrix = confusionMatrix(ytest, ypredict)
             print('Confusion Matrix:\n', confMatrix)
             plotConfusionMatrix(confMatrix,originalLabels,'Naive',i,convertDocName[base])
@@ -363,8 +378,20 @@ def NayveBayesRuns(base):
 
 
 if __name__ =='__main__':
-    NayveBayesRuns(2)
+    # NayveBayesRuns(1)
+    # NayveBayesRuns(2)
+    NayveBayesRuns(3)
+    NayveBayesRuns(4)
     # DMCRuns(0)
+    # DMCRuns(1)
+    # DMCRuns(2)
+    # DMCRuns(3)
+    # DMCRuns(4)
+    # KNNRuns(0)
+    # KNNRuns(1)
+    # KNNRuns(2)
+    # KNNRuns(3)
+    # KNNRuns(4)
 
 
 

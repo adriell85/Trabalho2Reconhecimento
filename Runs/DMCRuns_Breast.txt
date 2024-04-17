@@ -1,0 +1,104 @@
+Execução Iterações DMC.
+
+ACC: 0.911504424778761
+Confusion Matrix: 
+ [[35  8]
+ [ 2 68]] 
+
+ACC: 0.9292035398230089
+Confusion Matrix: 
+ [[35  4]
+ [ 4 70]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[41  3]
+ [ 1 68]] 
+
+ACC: 0.9469026548672567
+Confusion Matrix: 
+ [[31  5]
+ [ 1 76]] 
+
+ACC: 0.9380530973451328
+Confusion Matrix: 
+ [[33  4]
+ [ 3 73]] 
+
+ACC: 0.9734513274336283
+Confusion Matrix: 
+ [[34  3]
+ [ 0 76]] 
+
+ACC: 0.9203539823008849
+Confusion Matrix: 
+ [[40  7]
+ [ 2 64]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[37  2]
+ [ 2 72]] 
+
+ACC: 0.9557522123893806
+Confusion Matrix: 
+ [[32  3]
+ [ 2 76]] 
+
+ACC: 0.9469026548672567
+Confusion Matrix: 
+ [[43  5]
+ [ 1 64]] 
+
+ACC: 0.911504424778761
+Confusion Matrix: 
+ [[40  7]
+ [ 3 63]] 
+
+ACC: 0.9380530973451328
+Confusion Matrix: 
+ [[40  6]
+ [ 1 66]] 
+
+ACC: 0.9380530973451328
+Confusion Matrix: 
+ [[41  7]
+ [ 0 65]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[40  2]
+ [ 2 69]] 
+
+ACC: 0.9203539823008849
+Confusion Matrix: 
+ [[40  5]
+ [ 4 64]] 
+
+ACC: 0.9557522123893806
+Confusion Matrix: 
+ [[36  2]
+ [ 3 72]] 
+
+ACC: 0.9646017699115044
+Confusion Matrix: 
+ [[36  3]
+ [ 1 73]] 
+
+ACC: 0.9380530973451328
+Confusion Matrix: 
+ [[33  6]
+ [ 1 73]] 
+
+ACC: 0.9026548672566371
+Confusion Matrix: 
+ [[37  7]
+ [ 4 65]] 
+
+ACC: 0.9469026548672567
+Confusion Matrix: 
+ [[40  5]
+ [ 1 67]] 
+
+
+Acurácia média das 20 iterações: 9.50 ± 5.77
