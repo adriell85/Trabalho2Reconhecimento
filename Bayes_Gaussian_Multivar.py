@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from scipy.stats import multivariate_normal
 import numpy as np
 import matplotlib.pyplot as plt
@@ -120,8 +119,4 @@ def naiveBayesGaussianMultivar(xTrain, yTrain, xTest,baseName):
 
 
 
-=======
-import numpy as np
-from numba import njit
->>>>>>> parent of 2092834 (first commit)
 
